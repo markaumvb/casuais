@@ -1,0 +1,45 @@
+library(readxl)
+dados <- read_excel("cluster_linha/dados.xlsx", sheet = "Grupos")
+dados$Grupos <-factor(dados$Grupos)
+
+
+#GRUPOS:
+#1 - Depois
+#2 - Antes e Depois ****
+#3 -  nenhum
+#4 - Antes
+#escolhendo um grupo como base =>2
+dados$Grupos <- relevel(dados$Grupos, ref=2)
+
+library(nnet)
+model <- multinom(Grupos ~ com_antes + com_depois +
+                    issue_antes + issue_depois, data=dados)
+
+summary(model)
+
+
+coefs <- coef(model)
+coefs
+summary(model)$standard.errors
+summary(model)$coefficients
+
+
+coefs <- coef(model)
+
+exp(coefs)
+
+(exp(coefs)-1)*100
+
+
+
+
+zvalues <- summary(model)$coefficients / summary(model)$standard.errors
+# Show z-values
+zvalues
+
+pnorm(abs(zvalues), lower.tail=FALSE)*2 ## gerar o p-value
+
+
+
+library(pscl)
+pR2(model)

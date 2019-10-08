@@ -1,0 +1,41 @@
+De preferência seguir a ordem desses arquivos
+--------------------------------------------------------------------
+
+conecta.py
+
+arquivo para conectar no banco de dados mysql
+====================================================================
+
+pegar.py
+
+pegar os PR do github, para isso precisa passar como parametro: nome do owner, nome do repositório e se os pull requests devem ser merged ou unmerged
+====================================================================
+
+atualizar_pr.py
+
+atualizar a coleta dos PR inserindo informações adicionais
+====================================================================
+
+casuais_dados_usuarios.py
+
+pegar as informações dos usuários casuais, para isso o script consulta o Bd e retorna os casuais da busca, para cada casual ele busca na api as informações, após isso, é possível gravar no bd os dados de interesse
+====================================================================
+
+PR_casuais
+
+pegar os PR dos casuais, para isso ele faz a busca no bd e para cada usuário ele pega os prs deles e grava em outra tabela
+=====================================================================
+
+estrelas
+
+pegar usuarios que marcaram o projeto com uma estrela
+=============================================================================
+
+comentarios
+
+pegar comentarios de todos os PRS unmerged
+===============================================================================
+
+
+
+

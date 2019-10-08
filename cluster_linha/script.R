@@ -1,0 +1,87 @@
+library(mclust)
+library(readxl)
+dados <- read_excel("cluster_linha/dados.xlsx", 
+                    col_types = c("blank", "numeric", "numeric", 
+                                  "numeric", "numeric", "numeric", 
+                                  "numeric", "numeric", "numeric", 
+                                  "numeric", "numeric", "numeric"))
+df <- scale(dados, center = TRUE)
+set.seed(12) ## 7, 9 --- 2 grupos
+mc <- Mclust(df)
+summary(mc)
+mc$modelName #melhor modelo
+mc$G  #quantidade de Clusters
+head(mc$z, 30) #probabilidade de pertencer ao msm cluster
+head(mc$classification, 30) ## classificação dos clusters
+fviz_mclust_bic(mc)
+
+
+library(factoextra)
+# BIC values used for choosing the number of clusters
+fviz_mclust(mc, "BIC", palette = "jco")
+# Classification: plot showing the clustering
+fviz_mclust(mc, "classification", geom = "point", 
+            pointsize = 1.5, palette = "jco")
+# Classification uncertainty
+fviz_mclust(mc, "uncertainty", palette = "jco")
+
+
+
+dados$CLUST <- mc$classification
+dados$CLUST <- kmm$cluster
+
+
+
+write.csv(dados
+          [,c("CLUST", "tentativa antes", "tentativa depois", 
+              "com. Antes", 
+              "com. Depois", "issue depois", "issue antes")],file="dados.csv", row.names=FALSE, quote=FALSE)
+
+
+write.csv(orgs
+          [,c("CLUST", "tentativa_antes", "tentativa_depois", 
+              "comentario_antes","comentario_depois", 
+              "issue_antes", "issue_depois", "qtde_membros_projeto", "qtde_membros_org")],file="org.csv", row.names=FALSE, quote=FALSE)
+
+
+
+
+
+##kmeans
+
+wss <- sapply(1:k.max, 
+              function(k){kmeans(df, k, nstart=50,iter.max = 14 )$tot.withinss})
+wss
+plot(1:k.max, wss,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Número de Clusters K",
+     ylab="Soma dos quadrados dentro dos clusters")
+
+
+kmm=kmeans(df, 8, nstart = 25)
+kmm
+
+
+####grafico gurpos
+library(factoextra)
+fviz_cluster(kmm, dados,
+             palette = "Set2", ggtheme = theme_minimal())
+
+
+
+### métodos descobrir quantos cluster é o melhor
+library(NbClust)
+library(factoextra)
+
+
+fviz_nbclust(df, kmeans, method = "wss") +
+  geom_vline(linetype = 2)+
+  labs(subtitle = "Elbow method")
+
+fviz_nbclust(df, kmeans, method = "silhouette")+
+  labs(subtitle = "Silhouette method")
+
+
+set.seed(123)
+fviz_nbclust(df, kmeans, nstart = 25,  method = "gap_stat", nboot = 50)+
+  labs(subtitle = "Gap statistic method")

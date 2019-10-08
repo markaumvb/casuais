@@ -1,0 +1,11 @@
+ldata <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+ldata$rank <- factor(ldata$rank)
+
+model <- glm(admit ~ gre + gpa + rank, data=ldata, family="binomial")
+summary(model)
+
+coefs <- coef(model)
+
+exp(coefs)
+
+(exp(coefs)-1)*100

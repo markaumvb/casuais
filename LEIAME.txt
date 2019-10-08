@@ -1,0 +1,6 @@
+Cada pasta contem os dados analisados + gráficos gerados e scripts (SQL) para buscar os dados na base de dados gerada.
+
+duvidas?
+
+entre em contato:
+markaumvb@gmail.com
